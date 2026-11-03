@@ -8,13 +8,18 @@
 //   /.netlify/functions/stock?type=multi&codes=005930,...  → 여러 종목 현재가
 // 환경변수: KIS_APPKEY, KIS_APPSECRET
 
-const BASE = process.env.KIS_BASE_URL || "https://openapi.koreainvestment.com:9443";
-const KEY = process.env.KIS_APPKEY || process.env.KIS_APP_KEY;
-const SECRET = process.env.KIS_APPSECRET || process.env.KIS_APP_SECRET;
+// 환경변수 값에 붙어 들어온 공백·줄바꿈·따옴표를 제거 (복사·붙여넣기 실수 대응)
+const clean = (v) => (v == null ? "" : String(v).replace(/[\s"'\u200B\uFEFF]/g, ""));
+const REAL = "https://openapi.koreainvestment.com:9443";
+const VTS = "https://openapivts.koreainvestment.com:29443"; // 모의투자
+const KEY = clean(process.env.KIS_APPKEY || process.env.KIS_APP_KEY) || null;
+const SECRET = clean(process.env.KIS_APPSECRET || process.env.KIS_APP_SECRET) || null;
+const FIXED_BASE = clean(process.env.KIS_BASE_URL) || null; // 지정하면 그 서버만 사용
+let BASE = FIXED_BASE || REAL;
 const doFetch = (...a) => (typeof fetch === "function" ? fetch(...a) : require("node-fetch")(...a));
 
 // 토큰은 24시간 유효, 발급은 1분에 1번 제한 → 저장해 두고 재사용
-let mem = { token: null, exp: 0 };
+let mem = { token: null, exp: 0, base: null };
 
 function tokenStore(event) {
   try {
@@ -39,7 +44,7 @@ async function getToken(event, force) {
   const read = async () => { try { return store ? await store.get(TOKEN_KEY, { type: "json" }) : null; } catch (e) { return null; } };
 
   let c = force ? null : await read();
-  if (fresh(c)) { mem = c; return c.token; }
+  if (fresh(c)) { mem = c; if (c.base && !FIXED_BASE) BASE = c.base; return c.token; }
 
   // 다른 요청이 발급 중이면(잠금 20초) 그 결과를 기다림
   if (store) {
@@ -51,24 +56,32 @@ async function getToken(event, force) {
     try { await store.setJSON(LOCK_KEY, { at: Date.now() }); } catch (e) {}
   }
 
-  const issue = async () => {
-    const r = await doFetch(`${BASE}/oauth2/tokenP`, {
+  const issue = async (base) => {
+    const r = await doFetch(`${base}/oauth2/tokenP`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ grant_type: "client_credentials", appkey: KEY, appsecret: SECRET }),
     });
     return r.json();
   };
-  let j = await issue();
+  let j = await issue(BASE);
+  // 실전 서버가 앱키를 모르면 모의투자 서버로 한 번 더 시도 (모의투자용 키 대응)
+  if (!j.access_token && !FIXED_BASE && /AppKey|appkey|EGW00103|EGW00105/i.test(JSON.stringify(j))) {
+    const alt = BASE === REAL ? VTS : REAL;
+    const j2 = await issue(alt).catch(() => ({}));
+    if (j2.access_token) { BASE = alt; j = j2; }
+  }
   if (!j.access_token) {
     const msg = j.error_description || j.msg1 || JSON.stringify(j);
     // 1분 제한에 걸렸으면 다른 요청이 저장한 토큰이 있는지 잠시 확인
     if (/EGW00133|1분/.test(msg + (j.error_code || ""))) {
       for (let i = 0; i < 10; i++) { await sleep(600); c = await read(); if (fresh(c)) { mem = c; return c.token; } }
     }
-    throw new Error("토큰 발급 실패: " + msg + (/1분|EGW00133/.test(msg + (j.error_code || "")) ? " (1분 뒤 새로고침)" : ""));
+    const hint = /1분|EGW00133/.test(msg + (j.error_code || "")) ? " (1분 뒤 새로고침)"
+      : /AppKey|AppSecret|EGW0010/i.test(msg + (j.error_code || "")) ? ` (실전·모의 서버 모두 거부 — KIS Developers에서 앱키 상태와 Netlify 값 확인. 현재 앱키 ${KEY.length}자 · 시크릿 ${SECRET.length}자, 보통 앱키 36자·시크릿 180자)` : "";
+    throw new Error("토큰 발급 실패: " + msg + hint);
   }
-  mem = { token: j.access_token, exp: Date.now() + (Number(j.expires_in) || 86400) * 1000 };
+  mem = { token: j.access_token, exp: Date.now() + (Number(j.expires_in) || 86400) * 1000, base: BASE };
   if (store) { try { await store.setJSON(TOKEN_KEY, mem); await store.delete(LOCK_KEY); } catch (e) {} }
   return mem.token;
 }
@@ -90,7 +103,7 @@ async function kis(event, path, trId, params, retried) {
     const m = `${j.msg_cd || ""} ${j.msg1 || ""}`;
     // 토큰 무효·만료(EGW00121/00123) → 저장된 토큰 버리고 새로 받아 한 번 재시도
     if (!retried && /EGW0012[123]|token|토큰/i.test(m)) {
-      mem = { token: null, exp: 0 };
+      mem = { token: null, exp: 0, base: null };
       try { const st = tokenStore(event); if (st) await st.delete(TOKEN_KEY); } catch (e) {}
       return kis(event, path, trId, params, "token");
     }
@@ -192,7 +205,7 @@ exports.handler = async function (event) {
   if (!KEY || !SECRET) return res({ ok: false, error: "KIS_APPKEY / KIS_APPSECRET 환경변수가 없습니다. Netlify에 넣은 뒤 재배포하세요." }, 500);
   try {
     if (!type) return res(await price(event, code), 200, 30); // 예전 대시보드 호환
-    if (type === "price") return res({ ok: true, code, at: new Date().toISOString(), data: tidyPrice(await price(event, code)) }, 200, 30);
+    if (type === "price") { const data = tidyPrice(await price(event, code)); return res({ ok: true, code, at: new Date().toISOString(), server: BASE === VTS ? "모의투자" : "실전", data }, 200, 30); }
     if (type === "daily") {
       const days = Math.min(Math.max(Number(q.days) || 180, 20), 400);
       return res({ ok: true, code, data: await daily(event, code, days) }, 200, 600);
