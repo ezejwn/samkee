@@ -24,6 +24,10 @@
 
 ## 새 사이트로 배포 (원본과 분리)
 
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/ezejwn/samkee)
+
+위 버튼을 누르면 이 저장소로 **새 Netlify 프로젝트**가 만들어집니다. 아래는 직접 연결할 때의 순서입니다.
+
 1. GitHub에서 **새 저장소**를 만듭니다 (예: `samkee-note`). 기존 `stock-tracker`가 아닌 새 저장소입니다.
 2. 이 폴더 내용을 새 저장소에 올립니다 (commit → push).
 3. Netlify → **Add new site → Import an existing project** → 방금 만든 새 저장소 선택.
