@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>삼기에너지솔루션즈 (419050) 기업 노트</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#f6f7f9; --card:#fff; --ink:#15181d; --ink2:#4a5260; --ink3:#8a93a3; --line:#e4e7ec;
+  --navy:#16325c; --accent:#0f7b8a; --accent-soft:#e3f2f4; --up:#d63b3b; --down:#2f6fd6;
+  --t-dis:#2f6fd6; --t-co:#1f8a52; --t-ext:#6b7280; --t-hear:#d27a12; --t-est:#7b4fc9; --t-visit:#c2185b;
+  --r:12px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:15px;line-height:1.65;word-break:keep-all}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header.top{background:var(--navy);color:#fff;padding:28px 0 22px}
+header.top .kicker{font-size:13px;opacity:.75;letter-spacing:.02em}
+header.top h1{margin:4px 0 6px;font-size:28px;letter-spacing:-.02em}
+header.top .meta{font-size:13px;opacity:.85}
+nav.toc{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 20px;scrollbar-width:none}
+nav.toc a{flex:none;font-size:13px;color:var(--ink2);text-decoration:none;padding:5px 10px;border-radius:999px}
+nav.toc a:hover,nav.toc a.on{background:var(--accent-soft);color:var(--accent)}
+section{margin:28px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px}
+h2{font-size:21px;margin:0 0 14px;letter-spacing:-.02em;display:flex;align-items:baseline;gap:10px}
+h2 .no{font-size:13px;color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums}
+h3{font-size:16px;margin:22px 0 8px}
+p{margin:6px 0 10px}
+.muted{color:var(--ink3);font-size:13px}
+.small{font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#f2f4f7;font-weight:600;color:var(--ink2);white-space:nowrap}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.neg{color:var(--down)} .pos{color:var(--up)}
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;margin-left:4px;vertical-align:1px;color:#fff;white-space:nowrap}
+.tag.dis{background:var(--t-dis)} .tag.co{background:var(--t-co)} .tag.ext{background:var(--t-ext)}
+.tag.hear{background:var(--t-hear)} .tag.est{background:var(--t-est)} .tag.visit{background:var(--t-visit)}
+.srcbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 18px;font-size:13px;color:var(--ink2)}
+.srcbox div{padding:4px 0;border-bottom:1px dashed var(--line)}
+/* 시세 바 */
+.quote{display:grid;grid-template-columns:minmax(260px,1.1fr) 2fr;gap:20px;align-items:stretch}
+.quote .px{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.quote .chg{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+.quote .stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 14px;margin-top:12px;font-size:13px}
+.quote .stat b{display:block;font-size:15px;font-variant-numeric:tabular-nums}
+.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#aaa;margin-right:6px;vertical-align:1px}
+.live-dot.on{background:#1fbf6a;box-shadow:0 0 0 0 rgba(31,191,106,.6);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(31,191,106,.5)}70%{box-shadow:0 0 0 8px rgba(31,191,106,0)}100%{box-shadow:0 0 0 0 rgba(31,191,106,0)}}
+#chart{width:100%;height:220px;display:block}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:#fff;padding:4px 10px;font:inherit;font-size:12px;color:var(--ink2);cursor:pointer}
+.seg button.on{background:var(--navy);color:#fff}
+/* 핵심 박스 */
+.keybox{border-left:5px solid var(--accent);background:linear-gradient(90deg,var(--accent-soft),#fff 60%)}
+.keybox .lead{font-size:18px;font-weight:700;letter-spacing:-.01em;margin:0 0 10px}
+.keybox ol{margin:0;padding-left:20px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.tile .k{font-size:12px;color:var(--ink3)}
+.tile .v{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.tile .s{font-size:12px;color:var(--ink2)}
+/* 그림 */
+figure{margin:16px 0;background:#fbfcfd;border:1px solid var(--line);border-radius:10px;padding:14px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:13px;color:var(--ink2);margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+figcaption b{color:var(--ink)}
+.flow{stroke-dasharray:6 8;animation:flow 1.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-28}}
+.noise{stroke-dasharray:3 5;animation:flow .6s linear infinite}
+.blink{animation:blink 2.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.35}50%{opacity:1}}
+.fold{transform-box:view-box;transform-origin:330px 150px;animation:fold 5s ease-in-out infinite}
+@keyframes fold{0%,15%{transform:scaleX(1)}45%,60%{transform:scaleX(.12)}90%,100%{transform:scaleX(1)}}
+/* 타임라인 */
+.tl{position:relative;margin:10px 0 0 6px;padding-left:22px;border-left:2px solid var(--line)}
+.tl .ev{position:relative;margin:0 0 12px}
+.tl .ev:before{content:"";position:absolute;left:-29px;top:7px;width:12px;height:12px;border-radius:50%;background:#fff;border:3px solid var(--accent)}
+.tl .ev.big:before{background:var(--accent)}
+.tl .d{font-size:12px;color:var(--ink3);font-variant-numeric:tabular-nums}
+/* 질문지 */
+.qbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 14px}
+.qbar .seg button{font-size:13px;padding:6px 12px}
+.q{border:1px solid var(--line);border-radius:10px;margin:10px 0;background:#fff}
+.q.done{opacity:.55}
+.q .qh{display:flex;gap:10px;align-items:flex-start;padding:12px 14px}
+.q .qh input[type=checkbox]{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--accent)}
+.q .qid{font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums;flex:none;min-width:30px}
+.q .star{color:#e0a100;letter-spacing:-1px;flex:none;font-size:13px;margin-top:2px}
+.q .topic{font-size:12px;color:var(--accent);font-weight:700}
+.q .ask{font-size:15px;margin-top:2px}
+.q details{border-top:1px dashed var(--line);padding:0 14px}
+.q details summary{cursor:pointer;font-size:13px;color:var(--ink2);padding:8px 0}
+.q .why{font-size:13.5px;color:var(--ink2);padding-bottom:10px}
+.q .why dt{font-weight:700;color:var(--ink);margin-top:6px}
+.q .why dd{margin:2px 0 0 0}
+.q textarea{width:100%;min-height:54px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;font-size:13.5px;resize:vertical;margin-bottom:12px;background:#fffef6}
+.top5{background:#fff8e6;border:1px solid #f1d58a}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;background:#eef1f5;font-size:12px;margin:2px 4px 2px 0}
+/* 00 탐방 기록 */
+.visit-table input,.visit-table textarea{width:100%;border:1px solid var(--line);border-radius:6px;padding:6px 8px;font:inherit;font-size:13.5px;background:#fffef6}
+.visit-table textarea{min-height:40px;resize:vertical}
+.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:10px 0}
+.calc label{font-size:12px;color:var(--ink2);display:block}
+.calc input{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font:inherit;font-variant-numeric:tabular-nums;background:#fffef6}
+.calc .out{background:var(--accent-soft);border-radius:8px;padding:8px 10px}
+.calc .out b{font-size:18px;font-variant-numeric:tabular-nums}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.news li{margin:4px 0}
+.news .nd{font-size:12px;color:var(--ink3);font-variant-numeric:tabular-nums;margin-right:6px}
+.warn{background:#fff4f2;border:1px solid #f3c7bf;border-radius:10px;padding:10px 14px;font-size:13.5px}
+footer{padding:30px 0 60px;color:var(--ink3);font-size:12px}
+@media (max-width:760px){
+  .quote{grid-template-columns:1fr}
+  .two{grid-template-columns:1fr}
+  header.top h1{font-size:23px}
+  .card{padding:18px 16px}
+}
+@media print{nav.toc,.qbar,.btn{display:none} .card{break-inside:avoid} body{background:#fff}}
+
+/* 기업 노트 추가 스타일 */
+.badge{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.st-양산{background:#e2f5ea;color:#1f8a52}.st-양산준비{background:#e3f2f4;color:#0f7b8a}.st-퀄{background:#fff2dc;color:#b86a0c}.st-개발{background:#efe9fb;color:#7b4fc9}.st-중단{background:#eee;color:#777}
+.os-미확인{background:#fde8e8;color:#c0392b}.os-일부{background:#fff2dc;color:#b86a0c}.os-확인{background:#e2f5ea;color:#1f8a52}
+.ty{display:inline-block;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:6px;background:#eef1f5;color:var(--ink2)}
+.ty-미팅{background:#fff2dc;color:#b86a0c}.ty-공시{background:#e6eefc;color:#2f6fd6}.ty-기사{background:#eef1f5;color:#4a5260}.ty-IR{background:#e2f5ea;color:#1f8a52}.ty-메모{background:#efe9fb;color:#7b4fc9}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 12px}
+.filters input[type=search]{flex:1;min-width:180px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:13.5px}
+.log{border-left:3px solid var(--line);padding:2px 0 2px 16px;margin:0 0 18px;position:relative}
+.log:before{content:"";position:absolute;left:-7px;top:6px;width:11px;height:11px;border-radius:50%;background:#fff;border:3px solid var(--accent)}
+.log.t-미팅{border-left-color:#f1c27d}.log.t-미팅:before{border-color:#d27a12}
+.log.t-공시:before{border-color:#2f6fd6}
+.log .lh{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.log .ld{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink2)}
+.log .lt{font-weight:700}
+.log ul{margin:6px 0 0;padding-left:18px;font-size:14px;color:var(--ink2)}
+.log ul li{margin:2px 0}
+.log .web{font-size:11px;color:var(--ink3)}
+.addform{display:grid;grid-template-columns:140px 110px 110px 1fr;gap:8px;margin-top:10px}
+.addform input,.addform select,.addform textarea{padding:7px 9px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:13.5px;background:#fff}
+.addform textarea{grid-column:1/-1;min-height:110px}
+.addform .full{grid-column:1/-1}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cols3 h3{margin-top:0}
+.cols3 ul{margin:0;padding-left:18px;font-size:14px}
+.cols3 li{margin:4px 0}
+.segbar{display:flex;height:34px;border-radius:8px;overflow:hidden;margin:8px 0 6px}
+.segbar div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden}
+.legend-tags{font-size:12.5px;color:var(--ink2)}
+details.box summary{cursor:pointer;font-weight:600;font-size:14px}
+
+.exp-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;background:none;border:0;padding:16px 24px;font:inherit;text-align:left;cursor:pointer;color:var(--ink)}
+.exp-btn:hover{background:#f8fafb}
+.exp-btn .chev{transition:transform .2s;color:var(--ink3)}
+.exp-btn[aria-expanded=true] .chev{transform:rotate(180deg)}
+.exp-body{padding:0 24px 20px;border-top:1px solid var(--line)}
+.today{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:14px 0}
+.today .tile .v{font-size:18px}
+.mv{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;background:#fff}
+.mv .mh{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.mv .md{font-weight:700;font-variant-numeric:tabular-nums}
+.mv .mr{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums}
+.mv .meta{font-size:12.5px;color:var(--ink2)}
+.mv ul{margin:6px 0 0;padding-left:18px;font-size:13.5px}
+.mv li{margin:2px 0}
+.chip{display:inline-block;font-size:11.5px;padding:1px 7px;border-radius:6px;background:#eef1f5;color:var(--ink2);margin-right:4px}
+.bar{position:relative;height:8px;background:#f0f2f5;border-radius:4px;min-width:80px}
+.bar i{position:absolute;top:0;bottom:0;border-radius:4px}
+.tabs{margin-top:14px}
+.tabs button{font-size:13px;padding:6px 14px}
+.thm{margin:12px 0 4px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+@media (max-width:760px){.cols3{grid-template-columns:1fr}.addform{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">기업 노트 · KOSDAQ 419050 · 이차전지 부품</div>
+    <h1>삼기에너지솔루션즈 (SAMKEE Energy Solutions)</h1>
+    <div class="meta">최초 작성 <span id="created"></span> · 최근 업데이트 <b id="lastUpdated"></b> · 누적 기록 <span id="logCount"></span>건</div>
+  </div>
+</header>
+
+<nav class="toc"><div class="wrap">
+  <a href="#quote">시세</a><a href="#overview">개요</a><a href="#thesis">투자 관점</a><a href="#biz">사업</a><a href="#items">고객·아이템</a>
+  <a href="#fin">실적·재무</a><a href="#capital">자본 이력</a><a href="#val">밸류</a><a href="#industry">산업</a>
+  <a href="#log">누적 기록</a><a href="#open">확인할 것</a><a href="#watch">일정·리스크</a><a href="#news">기사</a><a href="#history">연혁</a><a href="#glossary">용어</a><a href="#src">출처·이력</a>
+</div></nav>
+
+<main class="wrap">
+
+<section>
+  <div class="legend-tags">출처 표시:
+    <span class="tag dis">공시</span> DART·정기보고서 <span class="tag co">회사</span> 보도자료·IR <span class="tag ext">외부</span> 언론·리서치
+    <span class="tag hear">전언</span> 미팅에서 들은 말 <span class="tag est">추정</span> 계산값
+  </div>
+</section>
+
+<!-- 시세 -->
+<section id="quote">
+  <div class="card quote">
+    <div>
+      <div class="muted"><span class="live-dot" id="liveDot"></span><span id="liveLabel">시세 불러오는 중…</span></div>
+      <div class="px" id="qPrice">–</div>
+      <div class="chg" id="qChg">&nbsp;</div>
+      <div class="stat">
+        <div><span class="muted">시가총액</span><b id="qCap">–</b></div>
+        <div><span class="muted">PBR</span><b id="qPbr">–</b></div>
+        <div><span class="muted">거래량</span><b id="qVol">–</b></div>
+        <div><span class="muted">52주 고가</span><b id="qHi">–</b></div>
+        <div><span class="muted">52주 저가</span><b id="qLo">–</b></div>
+        <div><span class="muted">상장주식수</span><b id="qSh">–</b></div>
+      </div>
+      <p class="muted" style="margin-top:12px">2026.10 3회차 CB 전환청구로 신주 약 616만 주 상장(11.02·11.17). 시총·PBR은 증가한 주식수 기준으로 확인하세요.</p>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <b class="small">일봉 종가</b>
+        <div class="seg" id="rangeSeg"><button data-d="60">3M</button><button data-d="180" class="on">6M</button><button data-d="365">1Y</button></div>
+      </div>
+      <svg id="chart" viewBox="0 0 640 220" preserveAspectRatio="none"></svg>
+      <div id="invBox" class="small" style="margin-top:8px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 왜 움직였나 -->
+<section id="why" style="margin-top:-14px">
+  <div class="card" style="padding:0">
+    <button class="exp-btn" id="whyBtn" aria-expanded="false">
+      <span><b>📉📈 주가가 왜 움직였나</b> <span class="muted small" id="whyHint">오늘 등락 · 시장 대비 · 수급 · 같은 날 나온 뉴스 · 큰 변동일</span></span>
+      <span class="chev">▾</span>
+    </button>
+    <div class="exp-body" id="whyBody" hidden>
+      <div id="whyToday"></div>
+      <h3>최근 6개월 큰 움직임</h3>
+      <p class="muted small" style="margin-top:0">하루 등락 ±5% 이상이거나 거래량이 평소(20일 평균)의 3배 이상인 날. 같은 날·전 거래일 이후 나온 뉴스와 기록, 그날 코스닥 등락, 수급을 함께 보여줍니다. <b>자동 매칭은 '같은 시기에 있었던 일'이지 원인을 확정한 것이 아닙니다.</b> 확인된 이유는 <span class="badge os-확인">확인</span>으로 표시합니다.</p>
+      <div class="filters" style="margin:0 0 8px"><div class="seg" id="moveFilter"><button data-f="all" class="on">전체</button><button data-f="up">상승</button><button data-f="down">하락</button></div></div>
+      <div id="whyMoves"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 주변 시장 -->
+<section id="around" style="margin-top:-14px">
+  <div class="card" style="padding:0">
+    <button class="exp-btn" id="aroundBtn" aria-expanded="false">
+      <span><b>🧭 다음 단계 — 주변 시장 함께 보기</b> <span class="muted small">동종기업 · 관련 테마 · 산업·시장 · 주요 이슈</span></span>
+      <span class="chev">▾</span>
+    </button>
+    <div class="exp-body" id="aroundBody" hidden>
+      <div class="seg tabs" id="aroundTabs">
+        <button data-t="peers" class="on">동종기업</button><button data-t="themes">관련 테마</button><button data-t="market">산업·시장</button><button data-t="issues">주요 이슈</button>
+      </div>
+      <div id="aroundSummary" class="small" style="margin:10px 0"></div>
+      <div id="aroundPane"></div>
+      <p class="muted small" style="margin-top:10px">등락률은 KIS 실시간(30초 캐시). 테마 구성 종목은 <code>public/data/samkee-data.js</code>의 <code>MARKET</code>에서 바꿀 수 있습니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 개요 -->
+<section id="overview">
+  <div class="card">
+    <h2><span class="no">01</span>기업 개요</h2>
+    <div class="two">
+      <div class="tbl-scroll"><table id="profileTbl"></table></div>
+      <div>
+        <div class="tiles" style="margin-top:0">
+          <div class="tile"><div class="k">2025 매출 / 영업이익</div><div class="v">1,442억 / 54억</div><div class="s">매출 +46%, 영업 흑자전환 <span class="tag dis">공시</span></div></div>
+          <div class="tile"><div class="k">1H26 매출 / 영업이익</div><div class="v">1,133억 / 49억</div><div class="s">2025 연간의 79% · 91%</div></div>
+          <div class="tile"><div class="k">지배주주 자본 (<span class="eqAsOf"></span>)</div><div class="v"><span class="eqV"></span>억</div><div class="s">자본총계 1,020억 · 부채비율 224%</div></div>
+          <div class="tile"><div class="k">미전환 CB (10.28)</div><div class="v">190억</div><div class="s">전환가 1,790원 · 약 1,060만 주</div></div>
+          <div class="tile"><div class="k">시가총액</div><div class="v" id="tCap">–</div><div class="s" id="tCapS">실시간</div></div>
+          <div class="tile"><div class="k">PBR</div><div class="v" id="tPbr">–</div><div class="s">지배주주 자본 <span class="eqAsOf"></span> 기준 <span class="tag est">추정</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 투자 관점 -->
+<section id="thesis">
+  <div class="card keybox">
+    <h2><span class="no">02</span>지금의 투자 관점</h2>
+    <p class="lead" id="oneLine"></p>
+    <div class="cols3">
+      <div><h3>좋아지는 것</h3><ul id="tPoints"></ul></div>
+      <div><h3>걱정되는 것</h3><ul id="tConcerns"></ul></div>
+      <div><h3>추적 지표</h3><ul id="tKpis"></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 사업 -->
+<section id="biz">
+  <div class="card">
+    <h2><span class="no">03</span>사업 구조</h2>
+    <p>이차전지 배터리 부품 회사입니다. ㈜삼기의 EV 부품 사업을 분할해 세웠고, 알루미늄 다이캐스팅·정밀가공으로 만드는 <b>배터리 모듈 End-Plate</b>가 본업입니다. 2025년부터 셀과 BMS를 잇는 신호 케이블 <b>FF-PCB</b>를 수원 사업장에서 양산해 ESS로 영역을 넓혔고, 미국 앨라배마의 <b>삼기아메리카</b>가 현대차 앨라배마 공장에 파워트레인 부품을 공급합니다 <span class="tag co">회사</span>.</p>
+    <div class="segbar" id="segBar"></div>
+    <div class="muted" id="segAsOf"></div>
+    <div class="tbl-scroll" style="margin-top:8px"><table id="segTbl"></table></div>
+    <figure>
+      <svg viewBox="0 0 900 360" role="img" aria-label="삼기에너지솔루션즈 생산 거점과 제품·고객 흐름">
+        <style>
+          .bx{fill:#fff;stroke:#c9d2dd;stroke-width:1.2}
+          .bxA{fill:#e3f2f4;stroke:#0f7b8a;stroke-width:1.4}
+          .bxU{fill:#fdf0e3;stroke:#d27a12;stroke-width:1.4}
+          .lb{font:600 13px Pretendard,sans-serif;fill:#15181d}
+          .sl{font:12px Pretendard,sans-serif;fill:#4a5260}
+          .ln{stroke:#0f7b8a;stroke-width:2;fill:none}
+          .ln2{stroke:#d27a12;stroke-width:2;fill:none}
+        </style>
+        <rect class="bx" x="10" y="130" width="130" height="100" rx="10"/>
+        <text class="lb" x="75" y="160" text-anchor="middle">원재료</text>
+        <text class="sl" x="75" y="180" text-anchor="middle">알루미늄 합금</text>
+        <text class="sl" x="75" y="196" text-anchor="middle">동박·절연필름</text>
+        <text class="sl" x="75" y="212" text-anchor="middle">커넥터</text>
+        <rect x="180" y="30" width="300" height="300" rx="14" fill="#f4f8fb" stroke="#16325c" stroke-dasharray="4 4"/>
+        <text class="lb" x="330" y="54" text-anchor="middle" style="fill:#16325c">생산 거점</text>
+        <rect class="bxA" x="200" y="70" width="260" height="62" rx="10"/>
+        <text class="lb" x="330" y="96" text-anchor="middle">서산·평택 — 기구부품</text>
+        <text class="sl" x="330" y="116" text-anchor="middle">고진공 다이캐스팅·가공 → End-Plate</text>
+        <rect class="bxA" x="200" y="148" width="260" height="62" rx="10"/>
+        <text class="lb" x="330" y="174" text-anchor="middle">수원 — 전장부품</text>
+        <text class="sl" x="330" y="194" text-anchor="middle">FF-PCB · 생산능력 427만 개(1H26)</text>
+        <rect class="bxU" x="200" y="226" width="260" height="62" rx="10"/>
+        <text class="lb" x="330" y="252" text-anchor="middle">미국 터스키기 — 삼기아메리카</text>
+        <text class="sl" x="330" y="272" text-anchor="middle">하이브리드 파워트레인 부품</text>
+        <text class="sl" x="330" y="314" text-anchor="middle">판교 기술연구소 · 경기 광주 방산 거점</text>
+        <path class="ln flow" d="M140 170 C160 170 170 101 200 101"/>
+        <path class="ln flow" d="M140 180 H200"/>
+        <path class="ln2 flow" d="M140 190 C160 190 170 257 200 257"/>
+        <g>
+          <rect class="bx" x="520" y="60" width="160" height="50" rx="10"/><text class="lb" x="600" y="90" text-anchor="middle">End-Plate 53%</text>
+          <rect class="bx" x="520" y="140" width="160" height="50" rx="10"/><text class="lb" x="600" y="170" text-anchor="middle">FF-PCB 22%</text>
+          <rect class="bx" x="520" y="232" width="160" height="50" rx="10" style="stroke:#d27a12"/><text class="lb" x="600" y="254" text-anchor="middle">LCC · TCC 등</text><text class="sl" x="600" y="272" text-anchor="middle">1H26 334억 (연결)</text>
+          <rect class="bx" x="520" y="296" width="160" height="40" rx="10" style="stroke:#7b4fc9;stroke-dasharray:4 3"/><text class="sl" x="600" y="321" text-anchor="middle">개발: 방산·로봇 배터리팩</text>
+        </g>
+        <path class="ln flow" d="M460 101 C490 101 490 85 520 85"/>
+        <path class="ln flow" d="M460 179 C490 179 490 165 520 165"/>
+        <path class="ln2 flow" d="M460 257 H520"/>
+        <g>
+          <rect class="bx" x="720" y="40" width="170" height="62" rx="10"/><text class="lb" x="805" y="66" text-anchor="middle">LG에너지솔루션 EV</text><text class="sl" x="805" y="86" text-anchor="middle">글로벌 완성차 배터리 모듈</text>
+          <rect class="bx" x="720" y="120" width="170" height="62" rx="10"/><text class="lb" x="805" y="146" text-anchor="middle">LG에너지솔루션 ESS</text><text class="sl" x="805" y="166" text-anchor="middle">북미 ESS · AI 데이터센터</text>
+          <rect class="bx" x="720" y="196" width="170" height="40" rx="10"/><text class="lb" x="805" y="221" text-anchor="middle">유럽 배터리 모듈사</text>
+          <rect class="bx" x="720" y="250" width="170" height="50" rx="10" style="stroke:#d27a12"/><text class="lb" x="805" y="280" text-anchor="middle">현대차 앨라배마</text>
+        </g>
+        <path class="ln flow" d="M680 85 C700 85 700 71 720 71"/>
+        <path class="ln flow" d="M680 165 C700 165 700 151 720 151"/>
+        <path class="ln flow" d="M680 165 C700 165 700 216 720 216"/>
+        <path class="ln2 flow" d="M680 257 C700 257 700 275 720 275"/>
+      </svg>
+      <figcaption><b>읽는 법:</b> 청록 선은 국내 본사(별도) 사업, 주황 선은 연결로 잡히는 삼기아메리카입니다. 비중은 1H26 별도 매출 799억 기준이고, 연결 매출 1,133억은 여기에 삼기아메리카 334억이 더해진 값입니다. <b>투자에서 볼 것:</b> 국내 매출은 End-Plate와 FF-PCB 모두 LG에너지솔루션 비중이 커서 고객의 EV·ESS 가동률이 곧 실적 변수입니다. 북미는 현대차 하이브리드 판매량에 연동됩니다.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 900 300" role="img" aria-label="배터리 모듈 안의 End-Plate와 FF-PCB 위치">
+        <style>
+          .cell{fill:#dfe6ee;stroke:#b7c3d1} .ep{fill:#16325c} .ff{fill:none;stroke:#0f7b8a;stroke-width:4} .lbl{font:600 12.5px Pretendard,sans-serif;fill:#15181d} .sub{font:11.5px Pretendard,sans-serif;fill:#4a5260}
+        </style>
+        <rect class="ep" x="150" y="80" width="22" height="150" rx="3"/>
+        <rect class="ep" x="528" y="80" width="22" height="150" rx="3"/>
+        <g>
+          <rect class="cell" x="180" y="90" width="36" height="130" rx="3"/><rect class="cell" x="223" y="90" width="36" height="130" rx="3"/><rect class="cell" x="266" y="90" width="36" height="130" rx="3"/><rect class="cell" x="309" y="90" width="36" height="130" rx="3"/><rect class="cell" x="352" y="90" width="36" height="130" rx="3"/><rect class="cell" x="395" y="90" width="36" height="130" rx="3"/><rect class="cell" x="438" y="90" width="36" height="130" rx="3"/><rect class="cell" x="481" y="90" width="36" height="130" rx="3"/>
+        </g>
+        <path class="ff" d="M198 84 V66 H620"/>
+        <path class="ff" d="M241 84 V66 M284 84 V66 M327 84 V66 M370 84 V66 M413 84 V66 M456 84 V66 M499 84 V66"/>
+        <circle r="4" fill="#f0b429"><animateMotion dur="2.4s" repeatCount="indefinite" path="M198 84 V66 H620"/></circle>
+        <circle r="4" fill="#f0b429"><animateMotion dur="2.4s" begin=".8s" repeatCount="indefinite" path="M370 84 V66 H620"/></circle>
+        <rect x="620" y="44" width="90" height="44" rx="6" fill="#fff" stroke="#15181d" stroke-width="1.4"/>
+        <text class="lbl" x="665" y="71" text-anchor="middle">BMS</text>
+        <line x1="161" y1="230" x2="120" y2="265" stroke="#16325c"/><text class="lbl" x="20" y="280">End-Plate (양쪽)</text><text class="sub" x="20" y="296">셀 팽창을 눌러 잡고 모듈 형태 유지</text>
+        <line x1="420" y1="66" x2="440" y2="28" stroke="#0f7b8a"/><text class="lbl" x="446" y="26">FF-PCB</text><text class="sub" x="506" y="26">셀마다 전압·온도 신호 (노란 점)</text>
+        <text class="sub" x="620" y="130">기존 Wire Harness 대비</text>
+        <text class="sub" x="620" y="148">무게 약 90% 절감 <tspan fill="#0f7b8a">(회사)</tspan></text>
+        <text class="sub" x="620" y="176">ESS는 랙당 셀 수가 많아</text>
+        <text class="sub" x="620" y="194">케이블이 길고 물량이 큼</text>
+        <text class="sub" x="620" y="222">美 특허 등록 2026.08</text>
+      </svg>
+      <figcaption><b>읽는 법:</b> 셀 적층체 양끝의 남색 판이 End-Plate, 위를 지나가는 청록 선이 FF-PCB입니다. 노란 점은 셀 신호가 BMS로 가는 흐름입니다. <b>투자에서 볼 것:</b> End-Plate는 모듈 수에, FF-PCB는 셀 수와 케이블 길이에 비례합니다. 대형 ESS는 셀 수가 많아 FF-PCB 매출 증가 속도가 EV보다 빠를 수 있습니다.</figcaption>
+    </figure>
+    <h3>사업 확장 로드맵 (IR북 2026) <span class="tag co">회사</span></h3>
+    <p class="small">회사는 STEP 01 EV(전기차 배터리 부품 기반 구축) → STEP 02 ESS(시장 진출·확대) → STEP 03 제품 다변화(방산 배터리팩, 로봇 배터리 부품, 신규 응용처) 순서를 제시합니다. 현재 실적은 STEP 01·02와 삼기아메리카가 만들고, 방산·로봇은 아직 시제품·개발 단계라 매출 기여는 제한적입니다.</p>
+    <h3>종속회사</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>법인</th><th class="n">지분</th><th>역할·연혁</th></tr></thead>
+      <tbody>
+        <tr><td><b>Samkee America Inc.</b><br><span class="muted">미국 앨라배마 터스키기 커머스파크</span></td><td class="n">공동 투자</td><td>삼기에너지솔루션즈·㈜삼기 공동 투자(합산 100%). 2024.05 HMMA향 양산, 매출 177억(2024) → 604억(2025) → 334억(1H26). 순이익 −64억(2025) → +4억(1H26). 현대차 앨라배마·기아 조지아·메타플랜트·현대차-LG엔솔 배터리 JV가 있는 남동부 벨트 <span class="tag co">회사</span><span class="tag ext">외부</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- 아이템 트래커 -->
+<section id="items">
+  <div class="card">
+    <h2><span class="no">04</span>고객·아이템 트래커</h2>
+    <p class="muted">고객·제품별 진행 단계를 한 줄씩 관리합니다. 규모는 회사가 말한 수치이며 확정 실적이 아닙니다. '최근 업데이트'는 해당 줄 정보를 마지막으로 확인한 날짜.</p>
+    <div class="filters" id="itemFilter"></div>
+    <div class="tbl-scroll"><table id="itemTbl"></table></div>
+  </div>
+</section>
+
+<!-- 실적 -->
+<section id="fin">
+  <div class="card">
+    <h2><span class="no">05</span>실적·재무</h2>
+    <figure>
+      <svg viewBox="0 0 900 300" role="img" aria-label="연간·반기 연결 매출과 영업이익">
+        <defs><linearGradient id="gq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f7b8a"/><stop offset="1" stop-color="#6fb9c3"/></linearGradient></defs>
+        <g id="qbars"></g>
+      </svg>
+      <figcaption><b>읽는 법:</b> 진한 막대는 연간, 옅은 막대는 반기(1H26) 연결 매출이고 막대 안 숫자는 영업이익입니다. 1H26은 반년 만에 2025년 연간 매출의 79%에 도달했습니다. <b>투자에서 볼 것:</b> 2025년은 영업이익 54억에도 금융비용 275억 때문에 순손실 111억이었습니다. 영업 흑자가 순이익으로 이어지는지는 CB 관련 평가손익과 이자비용이 좌우합니다.</figcaption>
+    </figure>
+    <h3>연간 (연결, 억 원) <span class="tag dis">공시</span></h3>
+    <div class="tbl-scroll"><table id="annualTbl"></table></div>
+    <p class="small">2024년 영업손실은 판관비 증가(82억 → 137억)가 삼기아메리카 양산 개시 시기와 겹친 구간. 2025년은 삼기아메리카 매출 604억이 더해져 흑자전환했지만 금융비용(275억)으로 순손실. 별도 기준 End-Plate 매출은 2021년 911억에서 2025년 569억까지 줄었다가 1H26 421억으로 반등 <span class="tag ext">외부</span>.</p>
+    <h3>기간별 (억 원) — 분기 연결 실적은 아직 미입력, 누적·별도 수치로 보완</h3>
+    <div class="tbl-scroll"><table id="qTbl"></table></div>
+    <h3>재무상태 (연결, 억 원) <span class="tag dis">공시</span></h3>
+    <div class="tbl-scroll"><table id="bsTbl"></table></div>
+    <p class="small">유동부채(1,474억)가 유동자산(1,171억)보다 커 유동비율 약 79%. 자본총계 1,020억 중 297억은 비지배지분(삼기아메리카 공동 투자분)이라 PBR은 지배주주 자본 723억으로 계산합니다.</p>
+    <h3>회사 가이던스 이력</h3>
+    <div class="tbl-scroll"><table id="guideTbl"></table></div>
+  </div>
+</section>
+
+<!-- 자본 이력 -->
+<section id="capital">
+  <div class="card">
+    <h2><span class="no">06</span>자본·지배구조 이력</h2>
+    <div class="tbl-scroll"><table id="capTbl"></table></div>
+  </div>
+</section>
+
+<!-- 밸류 -->
+<section id="val">
+  <div class="card">
+    <h2><span class="no">07</span>밸류에이션</h2>
+    <p class="small">순이익이 아직 들쭉날쭉해 PER 대신 <b>PBR</b>과 <b>PSR</b>을 봅니다. 남은 CB가 모두 전환되면 주식수와 자본이 함께 늘어나므로 <b>희석 PBR</b>도 같이 봅니다. 입력칸은 직접 바꿔 볼 수 있습니다 <span class="tag est">추정</span>.</p>
+    <div class="calc">
+      <div><label>주가 (원)</label><input type="number" id="cPrice"></div>
+      <div><label>상장주식수 (주)</label><input type="number" id="cShares"></div>
+      <div><label>지배주주 자본 (억)</label><input type="number" id="cEquity"></div>
+      <div><label>미전환 CB 잔액 (억)</label><input type="number" id="cGain" value="0"></div>
+      <div><label>CB 전환가 (원)</label><input type="number" id="cDisc" value="0"></div>
+      <div><label>연간 매출 (억)</label><input type="number" id="cSales"></div>
+    </div>
+    <div class="calc">
+      <div class="out"><span class="muted">시가총액</span><br><b id="oCap">–</b></div>
+      <div class="out"><span class="muted">BPS</span><br><b id="oBps">–</b></div>
+      <div class="out"><span class="muted">PBR</span><br><b id="oPbr">–</b></div>
+      <div class="out"><span class="muted">희석 PBR (CB 전액 전환)</span><br><b id="oPbr2">–</b></div>
+      <div class="out"><span class="muted">PSR (2025 매출)</span><br><b id="oPsr">–</b></div>
+      <div class="out"><span class="muted">PBR 1배 주가</span><br><b id="oP1">–</b></div>
+    </div>
+    <h3>PBR 밴드</h3>
+    <figure>
+      <svg id="pbrBand" viewBox="0 0 900 260" role="img" aria-label="PBR 밴드"></svg>
+      <figcaption>선은 일봉 종가(수정주가), 점선은 지배주주 자본 기준 BPS × 0.5·0.75·1.0·1.25배. CB 전환으로 주식수가 늘면 BPS가 바뀌므로 분기마다 자본·주식수를 갱신하세요.</figcaption>
+    </figure>
+    <h3>동종업계 <span class="tag ext">외부</span></h3>
+    <div class="tbl-scroll"><table id="peerTbl"></table></div>
+    <p class="muted" id="peerNote">빈칸(–)인 2025 실적은 데이터 파일 <code>PEERS</code>에 채우세요. 시총·PER·PBR은 시세 API 연결 시 실시간(KIS)으로 바뀝니다. 우열 판단은 넣지 않음.</p>
+  </div>
+</section>
+
+<!-- 산업 -->
+<section id="industry">
+  <div class="card">
+    <h2><span class="no">08</span>산업 동향</h2>
+    <div class="tbl-scroll"><table id="indTbl"></table></div>
+  </div>
+</section>
+
+<!-- 누적 기록 -->
+<section id="log">
+  <div class="card">
+    <h2><span class="no">09</span>누적 기록 <span class="muted" style="font-size:13px;font-weight:400">미팅·IR·공시·기사·메모, 최신순</span></h2>
+    <div class="filters">
+      <div class="seg" id="logType"></div>
+      <input type="search" id="logSearch" placeholder="기록 검색 (예: FF-PCB, LCC, CB)">
+    </div>
+    <div id="logList"></div>
+
+    <details class="box" id="addBox" style="margin-top:8px">
+      <summary>＋ 사이트에서 기록 추가 (관리 토큰 필요)</summary>
+      <p class="muted small">Netlify 환경변수 <code>NOTE_ADMIN_TOKEN</code>에 넣은 값을 입력하면 이 브라우저에 기억됩니다. 여기서 추가한 기록은 서버(Netlify Blobs)에 저장돼 모든 기기에서 보입니다. '비공개'로 고른 기록은 토큰이 있는 브라우저에서만 보입니다.</p>
+      <div class="addform">
+        <input type="date" id="fDate">
+        <select id="fType"><option>미팅</option><option>IR</option><option>공시</option><option>기사</option><option>메모</option></select>
+        <select id="fSrc"><option value="hear">전언</option><option value="co">회사</option><option value="dis">공시</option><option value="ext">외부</option><option value="est">추정</option></select>
+        <input id="fTitle" placeholder="제목 (예: 3Q26 실적 발표 후 IR 통화)">
+        <textarea id="fBody" placeholder="내용 — 한 줄에 하나씩 적으면 항목으로 나뉩니다"></textarea>
+        <input id="fLink" class="full" placeholder="링크 (선택)">
+        <select id="fVis"><option value="public">공개</option><option value="private">비공개</option></select>
+        <input type="password" id="fToken" placeholder="관리 토큰">
+        <button class="btn primary" id="fSave">저장</button>
+        <span class="muted small" id="fMsg" style="align-self:center"></span>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- 확인할 것 -->
+<section id="open">
+  <div class="card">
+    <h2><span class="no">10</span>확인할 것 · 답 들은 것</h2>
+    <p class="muted">다음 미팅·IR에서 확인할 질문을 쌓아 두고, 답을 들으면 상태와 내용을 채웁니다. 회사가 지금 답할 수 있는 사실 위주로 남기고, 공시 전 사항은 원칙 수준으로만 적습니다.</p>
+    <div class="filters" id="openFilter"></div>
+    <div class="tbl-scroll"><table id="openTbl"></table></div>
+  </div>
+</section>
+
+<!-- 일정·리스크 -->
+<section id="watch">
+  <div class="card">
+    <h2><span class="no">11</span>추적 일정과 리스크</h2>
+    <div class="two">
+      <div><h3 style="margin-top:0">일정</h3><div class="tbl-scroll"><table id="calTbl"></table></div></div>
+      <div><h3 style="margin-top:0">리스크</h3><ul class="small" id="riskList"></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 기사 -->
+<section id="news">
+  <div class="card">
+    <h2><span class="no">12</span>기사</h2>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <h3 style="margin:0">실시간 뉴스 <span class="muted" style="font-weight:400;font-size:12.5px">네이버 뉴스 검색 · 최신순</span></h3>
+      <div class="filters" style="margin:0">
+        <div class="seg" id="liveNewsQ"><button data-q="삼기에너지솔루션즈" class="on">삼기에너지솔루션즈</button><button data-q="삼기에너지솔루션즈 ESS">ESS</button><button data-q="삼기아메리카">삼기아메리카</button><button data-q="삼기에너지솔루션즈 FF-PCB">FF-PCB</button></div>
+      </div>
+    </div>
+    <p class="muted small" style="margin:4px 0 8px">아카이브에 없는 새 기사에는 <span class="badge os-미확인">NEW</span> 표시. 관리 토큰이 있으면 "+ 기록"으로 누적 기록에 바로 넣을 수 있습니다.</p>
+    <div id="liveNews" class="small"></div>
+    <h3>기사 아카이브</h3>
+    <div class="filters"><input type="search" id="newsSearch" placeholder="기사 제목 검색"><span class="muted" id="newsCount"></span></div>
+    <div id="newsList" class="news small"></div>
+  </div>
+</section>
+
+<!-- 연혁 -->
+<section id="history">
+  <div class="card">
+    <h2><span class="no">13</span>회사 연혁</h2>
+    <div class="tl" id="timeline"></div>
+  </div>
+</section>
+
+<section id="glossary">
+  <div class="card">
+    <h2><span class="no">14</span>용어</h2>
+    <div class="tbl-scroll"><table id="glossTbl"></table></div>
+  </div>
+</section>
+
+<section id="src">
+  <div class="card small">
+    <h2><span class="no">15</span>출처 · 노트 수정 이력</h2>
+    <div class="two">
+      <div><h3 style="margin-top:0">출처</h3><ul id="srcList"></ul></div>
+      <div><h3 style="margin-top:0">수정 이력</h3><div class="tbl-scroll"><table id="chgTbl"></table></div></div>
+    </div>
+    <p class="muted">공개 정보와 미팅 메모를 정리한 리서치 노트이며 투자 권유가 아닙니다. 블로그·커뮤니티는 출처로 쓰지 않았습니다.</p>
+  </div>
+</section>
+
+</main>
+<footer><div class="wrap">삼기에너지솔루션즈 기업 노트 · 419050</div></footer>
+
+<script src="data/samkee-data.js"></script>
+<script src="app.js"></script>
+<script src="market.js"></script>
+</body>
+</html>
