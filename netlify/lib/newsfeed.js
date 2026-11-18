@@ -44,9 +44,11 @@ function getStore(event) {
 // ok: 그 종목 기사로 볼 조건 — 네이버 종목뉴스는 '삼기' 같은 짧은 이름이면 "문제 삼기" 같은 무관 기사까지 섞여서 걸러냄
 const RELATED = [["122350", "㈜삼기", (n) =>
   /^(\[[^\]]*\]\s*)?(㈜|\(주\))?삼기\s*[,·…'"’”(]|^(\[[^\]]*\]\s*)?(㈜|\(주\))?삼기\s+(\d|3분기|분기|영업|매출|실적|주가|자회사|로봇|휴머노이드|다이캐스팅|수주|공급|투자|대표)/.test(n.title) ||
-  /㈜삼기|\(주\)삼기|삼기에너지솔루션즈|삼기아메리카|삼기\s*\(122350\)|다이캐스팅/.test(n.title + " " + (n.desc || "")),
+  /㈜삼기|\(주\)삼기|삼기\s*\(122350\)/.test(n.title + " " + (n.desc || "")),
   "삼기 다이캐스팅"]]; // 모회사 (최대주주 51.34%) · 마지막 값 = 네이버 뉴스 검색어
 const relatedOk = (n) => { const r = RELATED.find(([, co]) => co === n.co); return !r || r[2](n); };
+// 본 회사 이름이 제목에 있으면 관련 종목 표시를 떼고 본 회사 기사로
+const normCo = (n) => { if (n.co && NAME_RE.test(n.title)) delete n.co; return n; };
 
 async function fromNaverStock(pages = 2, code = CODE, co = "") {
   const out = [];
@@ -162,12 +164,12 @@ async function readArchive(store) {
 // 수집 → 기존 아카이브와 합침 → 저장
 async function collect(store) {
   const arc = await readArchive(store);
-  arc.items = arc.items.filter(relatedOk); // 조건에 안 맞는 예전 관련 종목 기사 정리
+  arc.items = arc.items.map(normCo).filter(relatedOk); // 예전 관련 종목 기사 정리
   const errors = [];
   let fresh = [];
   const sources = [["증권", () => fromNaverStock()], ["검색", fromNaverSearch], ...RELATED.flatMap(([c, n, ok, q]) => [[n, async () => (await fromNaverStock(1, c, n)).filter(ok)], [n + " 검색", () => fromNaverSearch(q, n, ok)]])];
   for (const [name, fn] of sources) {
-    try { fresh = fresh.concat(await fn()); } catch (e) { errors.push(`${name}: ${e.message || e}`); }
+    try { fresh = fresh.concat((await fn()).map(normCo)); } catch (e) { errors.push(`${name}: ${e.message || e}`); }
   }
   const keys = new Set(), titles = new Set();
   for (const n of arc.items) { if (n.key) keys.add(n.key); titles.add(normTitle(n.title)); }
