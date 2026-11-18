@@ -10,6 +10,10 @@
 [template.environment]
   KIS_APPKEY = "한국투자증권 Open API 앱키 (실시간 시세)"
   KIS_APPSECRET = "한국투자증권 Open API 시크릿"
-  NAVER_CLIENT_ID = "네이버 검색 API Client ID (실시간 뉴스, 선택)"
+  NAVER_CLIENT_ID = "네이버 검색 API Client ID — NAVER API HUB(10자) 또는 예전 개발자센터(20자) (선택)"
   NAVER_CLIENT_SECRET = "네이버 검색 API Client Secret (선택)"
   NOTE_ADMIN_TOKEN = "사이트에서 기록 추가용 비밀 문자열 (선택)"
+
+# 네이버 증권 삼기에너지솔루션즈 뉴스 자동 수집 (30분마다)
+[functions."news-collect"]
+  schedule = "*/30 * * * *"
