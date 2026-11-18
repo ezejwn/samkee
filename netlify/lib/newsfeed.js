@@ -1,13 +1,17 @@
 // 삼기에너지솔루션즈 뉴스 자동 수집 — 공용 로직
 //   1) 네이버 증권 종목뉴스 (m.stock.naver.com, 키 불필요)
 //   2) 네이버 뉴스 검색 API (NAVER_CLIENT_ID / SECRET 있을 때, 제목·요약에 회사명이 들어간 기사만)
-// 수집한 기사는 Netlify Blobs "ich-news" 저장소의 "archive" 키에 중복 없이 누적됩니다.
+// 수집한 기사는 Netlify Blobs "samkee-news" 저장소의 "archive" 키에 중복 없이 누적됩니다.
 
 const CODE = process.env.NEWS_STOCK_CODE || "419050";
 const NAME_RE = /삼기에너지솔루션즈|삼기에너지|삼기이브이|삼기EV|삼기아메리카/i;
 const MAX_ITEMS = 3000;
 
-const doFetch = (...a) => (typeof fetch === "function" ? fetch(...a) : require("node-fetch")(...a));
+const doFetch = (url, opts = {}, ms = 7000) => {
+  const f = typeof fetch === "function" ? fetch : require("node-fetch");
+  const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), ms);
+  return f(url, { ...opts, signal: ctl.signal }).catch((e) => { throw new Error(e.name === "AbortError" ? `시간 초과(${ms / 1000}초)` : e.message || String(e)); }).finally(() => clearTimeout(t));
+};
 const strip = (s) =>
   String(s || "")
     .replace(/<[^>]+>/g, "")
@@ -175,7 +179,7 @@ async function collect(store) {
   arc.lastError = errors.join(" / ");
   if (added) arc.lastAdded = added;
   await store.setJSON("archive", arc);
-  return { added, errors, total: arc.items.length, lastRun: now };
+  return { added, errors, total: arc.items.length, lastRun: now, _arc: arc };
 }
 
 module.exports = { getStore, readArchive, collect, naverKeys, diagnoseKeys, naverNewsSearch };

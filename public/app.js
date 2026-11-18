@@ -15,12 +15,12 @@
 
   let LIVE = { price: D.META.refPrice, shares: D.META.sharesEst, ok: false };
   let DAILY = [];
-  let WEBLOG = [], FEED = [], FEEDINFO = {};
+  let WEBLOG = [], FEED = [], FEEDINFO = {}, DISC = [], discAll = false;
 
   /* ---------- 머리 ---------- */
   function header() {
     $("#created").textContent = D.META.created;
-    const dates = [...D.LOG.map((l) => l.date), ...D.CHANGELOG.map((c) => c[0]), ...WEBLOG.map((l) => l.date), ...FEED.slice(0, 1).map((f) => f.date)];
+    const dates = [...D.LOG.map((l) => l.date), ...D.CHANGELOG.map((c) => c[0]), ...WEBLOG.map((l) => l.date), ...FEED.slice(0, 1).map((f) => f.date), ...DISC.slice(0, 1).map((x) => x.date)];
     $("#lastUpdated").textContent = dates.sort().slice(-1)[0] || D.META.created;
     $("#logCount").textContent = D.LOG.length + WEBLOG.length;
     $$(".eqAsOf").forEach((e) => (e.textContent = D.META.equityAsOf));
@@ -68,7 +68,7 @@
     $("#qTbl").innerHTML = "<thead><tr><th>" + (D.PERIOD_LABEL || "분기") + "</th><th class='n'>매출</th><th class='n'>영업이익</th><th class='n'>영업이익률</th><th>비고</th></tr></thead><tbody>" +
       D.QUARTERS.map((r) => {
         const m = r.op != null ? (r.op / r.s) * 100 : null;
-        return `<tr${r.guide ? ' style="background:#fffaf0"' : ""}><td>${r.q}${r.guide ? " (가이던스)" : ""}</td><td class="n">${fmt(r.s, r.s % 1 ? 1 : 0)}</td><td class="n ${signCls(r.op)}">${r.op == null ? "–" : fmt(r.op)}</td><td class="n">${m == null ? "–" : fmt(m, 1) + "%"}</td><td class="small">${esc(r.src)} ${r.guide ? tag("hear") : r.est ? tag("est") : ""}</td></tr>`;
+        return `<tr${r.guide ? ' style="background:#fffaf0"' : ""}><td>${r.q}${r.guide ? " (가이던스)" : ""}</td><td class="n">${fmt(r.s, r.s % 1 ? 1 : 0)}</td><td class="n ${signCls(r.op)}">${r.op == null ? "–" : fmt(r.op, r.op % 1 ? 1 : 0)}</td><td class="n">${m == null ? "–" : fmt(m, 1) + "%"}</td><td class="small">${r.rcept ? `<a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${r.rcept}" target="_blank" rel="noopener">${esc(r.src)}</a>` : esc(r.src)} ${r.dart ? tag("dis") : r.guide ? tag("hear") : r.est ? tag("est") : ""}</td></tr>`;
       }).join("") + "</tbody>";
 
     let b = "<thead><tr><th>항목</th>" + D.BS.cols.map((c) => `<th class="n">${c}</th>`).join("") + "</tr></thead><tbody>";
@@ -77,6 +77,51 @@
 
     $("#guideTbl").innerHTML = "<thead><tr><th>시점</th><th>내용</th></tr></thead><tbody>" + D.GUIDANCE.map(([d, t, s]) => `<tr><td class="n" style="text-align:left">${d}</td><td>${esc(t)} ${tag(s)}</td></tr>`).join("") + "</tbody>";
     qbars();
+  }
+  // DART 재무제표 자동 반영 — 연결 분기 실적(별도·자회사 몫 함께), 연간, 재무상태
+  async function loadFin() {
+    try {
+      const j = await fetch("/.netlify/functions/financials").then((r) => r.json());
+      if (!j.ok) { $("#finInfo").textContent = j.error ? "DART 재무 자동 반영 안 됨 — " + j.error : ""; return; }
+      const Q = j.quarters || [];
+      if (Q.length) {
+        D.PERIOD_LABEL = "분기 (연결)";
+        D.QUARTERS = Q.map((x) => ({
+          q: x.q, s: x.s, op: x.op, dart: true, rcept: x.rcept,
+          src: (x.derived ? "DART 사업보고서 − 3분기 누적" : "DART") + (x.sepS != null ? ` · 별도 ${fmt(x.sepS)}억 / ${fmt(x.sepOp)}억 · 연결−별도 ${fmt(Math.round(x.s - x.sepS))}억` : ""),
+        }));
+        if (Q.length >= 4) D.CHART = { title: "분기 연결 매출 (DART)", rows: Q.map((x) => ({ q: x.q, s: x.s, op: x.op == null ? null : Math.round(x.op) })) };
+        const real = Q.slice(-4);
+        if (real.length === 4) { D.META.ttmSales = Math.round(real.reduce((s, r) => s + r.s, 0)); if ($("#cSales")) $("#cSales").value = D.META.ttmSales; }
+      }
+      const A = D.ANNUAL;
+      (j.annual || []).forEach((x) => {
+        let i = A.years.indexOf(x.year);
+        if (i < 0) { A.years.push(x.year); i = A.years.length - 1; }
+        A.sales[i] = x.sales; A.op[i] = x.op; if (A.ni) A.ni[i] = x.ni; if (A.ocf) A.ocf[i] = x.ocf;
+      });
+      const map = { "자산총계": "assets", "유동자산": "curAssets", "비유동자산": "nonCurAssets", "현금성자산": "cash", "재고자산": "inv", "유형자산": "ppe", "부채총계": "liab", "유동부채": "curLiab", "비유동부채": "nonCurLiab", "총차입금(CB 포함)": "debt", "자본총계": "equity", "비지배지분": "nci", "지배주주 자본": "equityOwners" };
+      (j.bs || []).forEach((x) => {
+        const ck = (c) => (c.length === 4 ? c + ".12" : c);
+        let i = D.BS.cols.indexOf(x.col);
+        if (i < 0) {
+          if (ck(x.col) <= ck(D.BS.cols[D.BS.cols.length - 1])) return;
+          D.BS.cols.push(x.col); i = D.BS.cols.length - 1;
+        }
+        D.BS.rows.forEach((r) => {
+          const k = map[r[0]];
+          if (k) r[1][i] = x[k];
+          else if (r[0] === "부채비율") r[1][i] = x.equity ? Math.round((x.liab / x.equity) * 100) : null;
+          else if (r[0] === "유동비율") r[1][i] = x.curLiab ? Math.round((x.curAssets / x.curLiab) * 100) : null;
+        });
+      });
+      const last = (j.bs || []).slice(-1)[0];
+      const eq = last && (last.equityOwners || last.equity);
+      if (eq) { D.META.equity = eq; D.META.equityAsOf = last.col; if ($("#cEquity")) $("#cEquity").value = eq; }
+      const lq = Q.slice(-1)[0];
+      $("#finInfo").innerHTML = lq ? `DART 재무제표 자동 반영 · 최신 <b>${lq.q}</b>${lq.rcept ? ` (<a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${lq.rcept}" target="_blank" rel="noopener">원문</a>)` : ""} · 새 분기·사업보고서가 나오면 30분 안에 바뀝니다` + (j.lastError ? ` · 일부 오류: ${esc(j.lastError)}` : "") : (j.run && j.run.skipped ? "DART 재무제표: " + esc(j.run.skipped) : "DART 재무제표 확인 중 — 잠시 뒤 새로고침하면 반영됩니다");
+      finance(); header(); if (typeof calc === "function") calc();
+    } catch (e) { /* API 미연결 시 데이터 파일 값 그대로 */ }
   }
   function qbars() {
     const Q = (D.CHART && D.CHART.rows) || D.QUARTERS, W = 900, H = 300, L = 50, R = 20, T = 28, B = 40;
@@ -237,6 +282,35 @@
     }
   }
   $("#feedRefresh").addEventListener("click", () => loadFeed(true));
+
+  // 공시 아카이브 (DART·네이버 증권 자동 수집)
+  function discs() {
+    const q = $("#discSearch").value.trim().toLowerCase();
+    const list = DISC.filter((x) => !q || (x.title + " " + (x.filer || "")).toLowerCase().includes(q));
+    const show = discAll || q ? list : list.slice(0, 15);
+    const recent = Date.now() - 3 * 86400e3;
+    $("#discList").innerHTML = show.length ? `<table>${show.map((x) => `<tr><td class="d">${x.date.replace(/-/g, ".")}</td><td><a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.title)}</a>${x.rm && /정|철/.test(x.rm) ? ` <span class="muted">(${esc(x.rm)})</span>` : ""}${x.collectedAt && new Date(x.collectedAt).getTime() > recent ? ' <span class="badge os-미확인">NEW</span>' : ""}</td><td class="f">${esc(x.filer || "")}</td></tr>`).join("")}</table>` : '<p class="muted">공시가 아직 없습니다.</p>';
+    $("#discCount").textContent = DISC.length ? `${list.length}건` : "";
+    $("#discMore").style.display = !q && list.length > 15 ? "" : "none";
+    $("#discMore").textContent = discAll ? "최근 15건만" : `전체 ${list.length}건 보기`;
+  }
+  async function loadDisc(refresh) {
+    $("#discInfo").textContent = refresh ? "확인 중…" : "";
+    try {
+      const r = await fetch("/.netlify/functions/disclosures" + (refresh ? "?refresh=1" : "")); const j = await r.json();
+      if (!j.ok) throw new Error(j.error);
+      DISC = j.data || [];
+      const t = j.lastRun ? new Date(j.lastRun).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "–";
+      const add = j.run && j.run.added ? ` · 방금 ${j.run.added}건 추가` : "";
+      $("#discInfo").textContent = `${(j.sources || []).join("·") || "DART"} 자동 수집 · 30분마다 · 마지막 확인 ${t}${add}` + (!j.dartKey ? " · DART 키 미설정(네이버 증권 최근분만)" : "") + (j.lastError ? ` · 일부 오류: ${j.lastError}` : "");
+      discs(); header(); if (DAILY.length) drawChart(+$("#rangeSeg .on").dataset.d);
+    } catch (e) {
+      $("#discInfo").textContent = "공시 수집 API 미연결 — 배포 후 동작합니다.";
+    }
+  }
+  $("#discRefresh").addEventListener("click", () => loadDisc(true));
+  $("#discSearch").addEventListener("input", discs);
+  $("#discMore").addEventListener("click", () => { discAll = !discAll; discs(); });
   $("#newsList").addEventListener("click", async (e) => {
     const id = e.target.dataset && e.target.dataset.hide; if (!id) return;
     if (!confirm("이 기사를 아카이브에서 숨길까요? (다시 수집되지 않습니다)")) return;
@@ -325,7 +399,7 @@
     s += `<path d="${p} L${x(data.length - 1)},${H - B} L${L},${H - B}Z" fill="#0f7b8a" opacity=".08"/><path d="${p}" fill="none" stroke="#0f7b8a" stroke-width="2"/>`;
     [0, Math.floor(data.length / 2), data.length - 1].forEach((i) => { const d = data[i].d; s += `<text x="${x(i)}" y="${H - 6}" text-anchor="${i ? (i === data.length - 1 ? "end" : "middle") : "start"}" font-size="10" fill="#8a93a3">${d.slice(2, 4)}.${d.slice(4, 6)}.${d.slice(6)}</text>`; });
     // 누적 기록 중 미팅·공시 날짜를 차트에 점으로
-    const marks = [...D.LOG, ...WEBLOG].filter((l) => l.type === "미팅" || l.type === "공시");
+    const marks = [...D.LOG, ...WEBLOG].filter((l) => l.type === "미팅" || l.type === "공시").concat(DISC.map((x) => ({ date: x.date, type: "공시", title: x.title })));
     marks.forEach((m) => {
       const key = m.date.replace(/-/g, ""); const i = data.findIndex((d) => d.d >= key);
       if (i >= 0) s += `<circle cx="${x(i)}" cy="${y(data[i].c)}" r="4" fill="${m.type === "미팅" ? "#d27a12" : "#2f6fd6"}" stroke="#fff" stroke-width="1.5"><title>${m.date} ${esc(m.title)}</title></circle>`;
@@ -402,7 +476,7 @@
   ["cPrice", "cShares", "cEquity", "cGain", "cDisc", "cSales"].forEach((id) => $("#" + id).addEventListener("input", calc));
   $("#rangeSeg").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; $$("#rangeSeg button").forEach((x) => x.classList.toggle("on", x === b)); drawChart(+b.dataset.d); });
   calc(); peers(); drawChart(180); drawPBRBand();
-  loadWebLog(); loadLiveNews(); loadFeed();
+  loadWebLog(); loadLiveNews(); loadFeed(); loadDisc(); loadFin();
   // 시세는 순서대로: 현재가로 토큰을 먼저 확보한 뒤 나머지 (토큰 발급 1분 1회 제한 대응)
   (async () => { await loadPrice(); await loadDaily(); await loadInvestor(); await loadPeers(); })();
   setInterval(() => { const h = (new Date().getUTCHours() + 9) % 24; if (h >= 9 && h < 16) loadPrice(); }, 60000);

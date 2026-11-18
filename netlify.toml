@@ -13,7 +13,14 @@
   NAVER_CLIENT_ID = "네이버 검색 API Client ID — NAVER API HUB(10자) 또는 예전 개발자센터(20자) (선택)"
   NAVER_CLIENT_SECRET = "네이버 검색 API Client Secret (선택)"
   NOTE_ADMIN_TOKEN = "사이트에서 기록 추가용 비밀 문자열 (선택)"
+  DART_API_KEY = "OpenDART 인증키 40자 — 공시·재무제표 자동 반영 (opendart.fss.or.kr)"
 
-# 네이버 증권 삼기에너지솔루션즈 뉴스 자동 수집 (30분마다)
+# 삼기에너지솔루션즈 기사(네이버 증권)·공시·재무제표(DART) 자동 수집 (30분마다)
 [functions."news-collect"]
   schedule = "*/30 * * * *"
+
+# 페이지·스크립트·데이터는 매번 새 버전 확인 (내용 갱신이 바로 보이도록)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
