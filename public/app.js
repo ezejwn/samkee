@@ -254,19 +254,46 @@
     D.NEWS.forEach((n) => push(n[0], n[1], n[2], null));
     return out;
   }
+  let newsCo = "";
   function news(q = "") {
     q = q.trim().toLowerCase();
-    const list = allNews().filter((n) => !q || n[1].toLowerCase().includes(q));
+    const list = allNews().filter((n) => (!q || n[1].toLowerCase().includes(q)) && (!newsCo || (newsCo === "self" ? !(n[3] && n[3].co) : n[3] && n[3].co === newsCo)));
     const byM = {};
     list.forEach((n) => (byM[n[0]] = byM[n[0]] || []).push(n));
     const recent = Date.now() - 3 * 86400e3;
     $("#newsList").innerHTML = Object.keys(byM).sort().reverse().map((m) => `<h3 style="font-size:14px;margin:14px 0 4px">${m.replace("-", ".")}</h3><ul style="margin:0;padding-left:18px">${byM[m].map((n) => {
       const f = n[3];
       const meta = f ? ` <span class="muted">${f.date.slice(5).replace("-", ".")}${f.press ? " · " + esc(f.press) : ""}</span>${new Date(f.collectedAt).getTime() > recent ? ' <span class="badge os-미확인">NEW</span>' : ""}${ADMIN ? ` <button class="btn" data-hide="${esc(f.id)}" title="관련 없는 기사 숨기기" style="padding:0 6px;font-size:11px">숨김</button>` : ""}` : "";
-      return `<li><a href="${esc(n[2])}" target="_blank" rel="noopener">${esc(n[1])}</a>${meta}</li>`;
+      return `<li>${f && f.co ? `<span class="cotag">${esc(f.co)}</span>` : ""}<a href="${esc(n[2])}" target="_blank" rel="noopener">${esc(n[1])}</a>${meta}</li>`;
     }).join("")}</ul>`).join("");
-    $("#newsCount").textContent = `${list.length}건` + (FEED.length ? ` (자동 수집 ${FEED.length}건)` : "");
+    const coN = FEED.filter((f) => f.co).length;
+    $("#newsCount").textContent = `${list.length}건` + (FEED.length ? ` (자동 수집 ${FEED.length}건${coN ? ` · ㈜삼기 ${coN}건` : ""})` : "");
   }
+  $("#newsCo").addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    $$("#newsCo button").forEach((x) => x.classList.toggle("on", x === b)); newsCo = b.dataset.c; news($("#newsSearch").value);
+  });
+
+  // 지난 방문 이후 새로 들어온 기사·공시 알림 (이 브라우저 기준)
+  const firstSeen = ls.get("lastSeen", null);
+  let lastSeen = firstSeen || new Date().toISOString();
+  if (!firstSeen) ls.set("lastSeen", lastSeen);
+  function updateBanner() {
+    const since = new Date(lastSeen).getTime();
+    const isNew = (x) => x.collectedAt && new Date(x.collectedAt).getTime() > since;
+    const nSelf = FEED.filter((f) => isNew(f) && !f.co), nCo = FEED.filter((f) => isNew(f) && f.co), nDisc = DISC.filter(isNew);
+    const total = nSelf.length + nCo.length + nDisc.length;
+    document.title = (total ? `(${total}) ` : "") + document.title.replace(/^\(\d+\) /, "");
+    if (!total) { $("#newBanner").style.display = "none"; return; }
+    const when = new Date(lastSeen).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" });
+    const parts = [nSelf.length && `삼기에너지솔루션즈 기사 <b>${nSelf.length}</b>건`, nCo.length && `㈜삼기 기사 <b>${nCo.length}</b>건`, nDisc.length && `공시 <b>${nDisc.length}</b>건`].filter(Boolean).join(" · ");
+    const first = [...nDisc.map((x) => "[공시] " + x.title), ...nSelf.map((f) => f.title), ...nCo.map((f) => "[㈜삼기] " + f.title)][0];
+    $("#newBanner").innerHTML = `<span>🔔 지난 확인(${when}) 이후 새로 들어옴: ${parts}</span><span class="muted" style="color:#9a6a1a">${esc(first || "")}</span><a href="#news">보기</a><button id="seenBtn">확인했음</button>`;
+    $("#newBanner").style.display = "";
+    $("#seenBtn").addEventListener("click", () => { lastSeen = new Date().toISOString(); ls.set("lastSeen", lastSeen); updateBanner(); news($("#newsSearch").value); discs(); });
+  }
+  // 페이지를 열어 두면 10분마다 새 기사·공시 확인
+  setInterval(() => { loadFeed(); loadDisc(); }, 10 * 60e3);
   async function loadFeed(refresh) {
     $("#feedInfo").textContent = refresh ? "수집 중…" : "";
     try {
@@ -276,7 +303,7 @@
       const t = j.lastRun ? new Date(j.lastRun).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "–";
       const add = j.run && j.run.added ? ` · 방금 ${j.run.added}건 추가` : "";
       $("#feedInfo").textContent = `네이버 증권 자동 수집 · 30분마다 · 마지막 확인 ${t}${add}` + (j.lastError ? (/^검색:/.test(j.lastError) && !/증권:/.test(j.lastError) ? " · (보조 검색 API 키 오류 — 네이버 증권 수집은 정상)" : ` · 오류: ${j.lastError}`) : "");
-      news($("#newsSearch").value); header();
+      news($("#newsSearch").value); header(); updateBanner();
       if (LIVENEWS.length) renderLiveNews();
     } catch (e) {
       $("#feedInfo").textContent = "자동 수집 API 미연결 — 배포 후 동작합니다.";
@@ -304,7 +331,7 @@
       const t = j.lastRun ? new Date(j.lastRun).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "–";
       const add = j.run && j.run.added ? ` · 방금 ${j.run.added}건 추가` : "";
       $("#discInfo").textContent = `${(j.sources || []).join("·") || "DART"} 자동 수집 · 30분마다 · 마지막 확인 ${t}${add}` + (!j.dartKey ? " · DART 키 미설정(네이버 증권 최근분만)" : "") + (j.lastError ? ` · 일부 오류: ${j.lastError}` : "");
-      discs(); header(); if (DAILY.length) drawChart(+$("#rangeSeg .on").dataset.d);
+      discs(); header(); updateBanner(); if (DAILY.length) drawChart(+$("#rangeSeg .on").dataset.d);
     } catch (e) {
       $("#discInfo").textContent = "공시 수집 API 미연결 — 배포 후 동작합니다.";
     }

@@ -40,11 +40,14 @@ function getStore(event) {
 }
 
 // 1) 네이버 증권 종목뉴스
-async function fromNaverStock(pages = 2) {
+// 함께 모을 관련 종목 — co: 화면에 붙는 표시 (본 회사는 빈 값)
+const RELATED = [["122350", "㈜삼기"]]; // 모회사 (최대주주 51.34%)
+
+async function fromNaverStock(pages = 2, code = CODE, co = "") {
   const out = [];
   for (let page = 1; page <= pages; page++) {
-    const r = await doFetch(`https://m.stock.naver.com/api/news/stock/${CODE}?pageSize=20&page=${page}`, {
-      headers: { "User-Agent": "Mozilla/5.0", Referer: `https://m.stock.naver.com/domestic/stock/${CODE}/news` },
+    const r = await doFetch(`https://m.stock.naver.com/api/news/stock/${code}?pageSize=20&page=${page}`, {
+      headers: { "User-Agent": "Mozilla/5.0", Referer: `https://m.stock.naver.com/domestic/stock/${code}/news` },
     });
     if (!r.ok) throw new Error("네이버 증권 " + r.status);
     const j = await r.json();
@@ -66,6 +69,7 @@ async function fromNaverStock(pages = 2) {
         press: strip(it.officeName || it.officeHname || ""),
         link: `https://n.news.naver.com/mnews/article/${oid}/${aid}`,
         source: "naver-stock",
+        ...(co ? { co } : {}),
       });
     }
   }
@@ -154,20 +158,22 @@ async function collect(store) {
   const arc = await readArchive(store);
   const errors = [];
   let fresh = [];
-  for (const [name, fn] of [["증권", fromNaverStock], ["검색", fromNaverSearch]]) {
+  const sources = [["증권", () => fromNaverStock()], ["검색", fromNaverSearch], ...RELATED.map(([c, n]) => [n, () => fromNaverStock(1, c, n)])];
+  for (const [name, fn] of sources) {
     try { fresh = fresh.concat(await fn()); } catch (e) { errors.push(`${name}: ${e.message || e}`); }
   }
   const keys = new Set(), titles = new Set();
   for (const n of arc.items) { if (n.key) keys.add(n.key); titles.add(normTitle(n.title)); }
   for (const h of arc.hidden) (h.startsWith("t:") ? titles.add(h.slice(2)) : keys.add(h));
   const now = new Date().toISOString();
+  const coSeen = new Set(arc.items.filter((n) => n.co).map((n) => n.co)); // 관련 종목을 처음 모을 때는 지난 기사를 NEW로 표시하지 않음
   let added = 0;
   // 오래된 것부터 넣어서 최신이 맨 위에 오도록
   for (const n of fresh.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))) {
     const t = normTitle(n.title);
     if (!t || (n.key && keys.has(n.key)) || titles.has(t)) continue;
     n.id = n.key || "s-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    n.collectedAt = now;
+    n.collectedAt = n.co && !coSeen.has(n.co) ? "" : now;
     arc.items.unshift(n);
     if (n.key) keys.add(n.key);
     titles.add(t);

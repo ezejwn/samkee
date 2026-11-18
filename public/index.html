@@ -58,6 +58,9 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .seg button{border:0;background:#fff;padding:4px 10px;font:inherit;font-size:12px;color:var(--ink2);cursor:pointer}
 .seg button.on{background:var(--navy);color:#fff}
+.newbanner{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#fff7e6;border:1px solid #f3d29a;color:#7a4b00;border-radius:10px;padding:8px 12px;font-size:13px}
+.newbanner a{color:#7a4b00;font-weight:700}.newbanner button{border:1px solid #e6bf7a;background:#fff;border-radius:6px;padding:2px 8px;font:inherit;font-size:12px;cursor:pointer;color:#7a4b00}
+.cotag{display:inline-block;font-size:11px;padding:0 6px;border-radius:4px;background:#eef1f6;color:#4a5260;margin-right:4px;vertical-align:1px}
 /* 핵심 박스 */
 .keybox{border-left:5px solid var(--accent);background:linear-gradient(90deg,var(--accent-soft),#fff 60%)}
 .keybox .lead{font-size:18px;font-weight:700;letter-spacing:-.01em;margin:0 0 10px}
@@ -192,6 +195,7 @@ details.box summary{cursor:pointer;font-weight:600;font-size:14px}
     <div class="kicker">기업 노트 · KOSDAQ 419050 · 이차전지 부품</div>
     <h1>삼기에너지솔루션즈 (SAMKEE Energy Solutions)</h1>
     <div class="meta">최초 작성 <span id="created"></span> · 최근 업데이트 <b id="lastUpdated"></b> · 누적 기록 <span id="logCount"></span>건</div>
+    <div id="newBanner" class="newbanner" style="display:none"></div>
   </div>
 </header>
 
@@ -552,14 +556,14 @@ details.box summary{cursor:pointer;font-weight:600;font-size:14px}
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
       <h3 style="margin:0">실시간 뉴스 <span class="muted" style="font-weight:400;font-size:12.5px" id="liveSrc">네이버 뉴스 검색 · 최신순</span></h3>
       <div class="filters" style="margin:0">
-        <div class="seg" id="liveNewsQ"><button data-q="삼기에너지솔루션즈" class="on">삼기에너지솔루션즈</button><button data-q="삼기에너지솔루션즈 ESS">ESS</button><button data-q="삼기아메리카">삼기아메리카</button><button data-q="삼기에너지솔루션즈 FF-PCB">FF-PCB</button></div>
+        <div class="seg" id="liveNewsQ"><button data-q="삼기에너지솔루션즈" class="on">삼기에너지솔루션즈</button><button data-q="삼기에너지솔루션즈 ESS">ESS</button><button data-q="삼기아메리카">삼기아메리카</button><button data-q="삼기에너지솔루션즈 FF-PCB">FF-PCB</button><button data-q="삼기 다이캐스팅">㈜삼기</button></div>
       </div>
     </div>
     <p class="muted small" style="margin:4px 0 8px">아카이브에 없는 새 기사에는 <span class="badge os-미확인">NEW</span> 표시. 관리 토큰이 있으면 "+ 기록"으로 누적 기록에 바로 넣을 수 있습니다.</p>
     <div id="liveNews" class="small"></div>
     <h3>기사 아카이브 <span class="muted" style="font-weight:400;font-size:12.5px">새 기사가 나오면 자동으로 쌓입니다</span></h3>
     <p class="muted small" style="margin:2px 0 6px"><span id="feedInfo"></span> <button class="btn" id="feedRefresh" style="padding:1px 8px;font-size:11.5px">지금 확인</button></p>
-    <div class="filters"><input type="search" id="newsSearch" placeholder="기사 제목 검색"><span class="muted" id="newsCount"></span></div>
+    <div class="filters"><input type="search" id="newsSearch" placeholder="기사 제목 검색"><div class="seg" id="newsCo"><button data-c="" class="on">전체</button><button data-c="self">삼기에너지솔루션즈</button><button data-c="㈜삼기">㈜삼기(모회사)</button></div><span class="muted" id="newsCount"></span></div>
     <div id="newsList" class="news small"></div>
   </div>
 </section>
@@ -594,8 +598,8 @@ details.box summary{cursor:pointer;font-weight:600;font-size:14px}
 <footer><div class="wrap">삼기에너지솔루션즈 기업 노트 · 419050</div></footer>
 
 <button id="fab" title="미팅·새 정보 기록 추가">＋ 기록</button>
-<script src="data/samkee-data.js?v=20261118b"></script>
-<script src="app.js?v=20261118b"></script>
-<script src="market.js?v=20261118b"></script>
+<script src="data/samkee-data.js?v=20261118c"></script>
+<script src="app.js?v=20261118c"></script>
+<script src="market.js?v=20261118c"></script>
 </body>
 </html>
