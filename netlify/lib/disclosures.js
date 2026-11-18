@@ -6,7 +6,7 @@
 const zlib = require("zlib");
 // ---- 회사별 설정 ----
 const STOCK = process.env.NEWS_STOCK_CODE || "419050";
-const LISTED = "20220101"; // 상장(2022) 무렵부터 이력 수집
+const LISTED = "20230101"; // 상장(2023.02) 무렵부터 이력 수집
 const STORE = "samkee-dart";
 
 const KNOWN_CORP = { "368600": "01302853" }; // 알려진 DART 고유번호 — 없으면 예약 실행에서 자동 조회 (DART_CORP_CODE로 직접 지정 가능)

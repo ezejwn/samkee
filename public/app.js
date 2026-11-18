@@ -118,6 +118,7 @@
       const last = (j.bs || []).slice(-1)[0];
       const eq = last && (last.equityOwners || last.equity);
       if (eq) { D.META.equity = eq; D.META.equityAsOf = last.col; if ($("#cEquity")) $("#cEquity").value = eq; }
+      if (last && last.equity && $("#eqS")) $("#eqS").textContent = `자본총계 ${fmt(Math.round(last.equity))}억 · 부채비율 ${last.liab ? Math.round((last.liab / last.equity) * 100) + "%" : "–"} (${last.col})`;
       const lq = Q.slice(-1)[0];
       $("#finInfo").innerHTML = lq ? `DART 재무제표 자동 반영 · 최신 <b>${lq.q}</b>${lq.rcept ? ` (<a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${lq.rcept}" target="_blank" rel="noopener">원문</a>)` : ""} · 새 분기·사업보고서가 나오면 30분 안에 바뀝니다` + (j.lastError ? ` · 일부 오류: ${esc(j.lastError)}` : "") : (j.run && j.run.skipped ? "DART 재무제표: " + esc(j.run.skipped) : "DART 재무제표 확인 중 — 잠시 뒤 새로고침하면 반영됩니다");
       finance(); header(); if (typeof calc === "function") calc();

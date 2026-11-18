@@ -282,8 +282,8 @@ details.box summary{cursor:pointer;font-weight:600;font-size:14px}
       <div>
         <div class="tiles" style="margin-top:0">
           <div class="tile"><div class="k">2025 매출 / 영업이익</div><div class="v">1,442억 / 54억</div><div class="s">매출 +46%, 영업 흑자전환 <span class="tag dis">공시</span></div></div>
-          <div class="tile"><div class="k">1H26 매출 / 영업이익</div><div class="v">1,133억 / 49억</div><div class="s">2025 연간의 79% · 91%</div></div>
-          <div class="tile"><div class="k">지배주주 자본 (<span class="eqAsOf"></span>)</div><div class="v"><span class="eqV"></span>억</div><div class="s">자본총계 1,020억 · 부채비율 224%</div></div>
+          <div class="tile"><div class="k">3Q26 매출 / 영업이익 (연결)</div><div class="v">626억 / 27억</div><div class="s">매출 +59.5% · 영업이익 -5.5% · 순손실 45억 · 1~9월 1,758억 / 77억 <span class="tag dis">공시</span></div></div>
+          <div class="tile"><div class="k">지배주주 자본 (<span class="eqAsOf"></span>)</div><div class="v"><span class="eqV"></span>억</div><div class="s" id="eqS">자본총계 1,020억 · 부채비율 224% (26.06)</div></div>
           <div class="tile"><div class="k">미전환 CB (10.28)</div><div class="v">190억</div><div class="s">전환가 1,790원 · 약 1,060만 주</div></div>
           <div class="tile"><div class="k">시가총액</div><div class="v" id="tCap">–</div><div class="s" id="tCapS">실시간</div></div>
           <div class="tile"><div class="k">PBR</div><div class="v" id="tPbr">–</div><div class="s">지배주주 자본 <span class="eqAsOf"></span> 기준 <span class="tag est">추정</span></div></div>
@@ -420,11 +420,11 @@ details.box summary{cursor:pointer;font-weight:600;font-size:14px}
   <div class="card">
     <h2><span class="no">05</span>실적·재무</h2>
     <figure>
-      <svg viewBox="0 0 900 300" role="img" aria-label="연간·반기 연결 매출과 영업이익">
+      <svg viewBox="0 0 900 300" role="img" aria-label="연결 매출과 영업이익">
         <defs><linearGradient id="gq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f7b8a"/><stop offset="1" stop-color="#6fb9c3"/></linearGradient></defs>
         <g id="qbars"></g>
       </svg>
-      <figcaption><b>읽는 법:</b> 진한 막대는 연간, 옅은 막대는 반기(1H26) 연결 매출이고 막대 안 숫자는 영업이익입니다. 1H26은 반년 만에 2025년 연간 매출의 79%에 도달했습니다. <b>투자에서 볼 것:</b> 2025년은 영업이익 54억에도 금융비용 275억 때문에 순손실 111억이었습니다. 영업 흑자가 순이익으로 이어지는지는 CB 관련 평가손익과 이자비용이 좌우합니다.</figcaption>
+      <figcaption><b>읽는 법:</b> 막대는 연결 매출, 막대 안 숫자는 영업이익입니다(DART 반영 후에는 분기별로 표시). 3Q26은 매출 626억(+59.5%)으로 외형이 계속 커졌지만 영업이익은 27억(-5.5%)으로 이익률이 4%대로 낮아졌고, 금융비용 등으로 순손실 45억(적자 전환)이었습니다. <b>투자에서 볼 것:</b> 매출 성장이 영업이익률 회복으로 이어지는지, 그리고 영업이익이 순이익으로 남는지(CB 평가손익·이자비용)입니다. 2025년에도 영업이익 54억에 금융비용 275억으로 순손실 111억이었습니다.</figcaption>
     </figure>
     <h3>연간 (연결, 억 원) <span class="tag dis">공시</span></h3>
     <div class="tbl-scroll"><table id="annualTbl"></table></div>
@@ -594,8 +594,8 @@ details.box summary{cursor:pointer;font-weight:600;font-size:14px}
 <footer><div class="wrap">삼기에너지솔루션즈 기업 노트 · 419050</div></footer>
 
 <button id="fab" title="미팅·새 정보 기록 추가">＋ 기록</button>
-<script src="data/samkee-data.js?v=20261118"></script>
-<script src="app.js?v=20261118"></script>
-<script src="market.js?v=20261118"></script>
+<script src="data/samkee-data.js?v=20261118b"></script>
+<script src="app.js?v=20261118b"></script>
+<script src="market.js?v=20261118b"></script>
 </body>
 </html>
